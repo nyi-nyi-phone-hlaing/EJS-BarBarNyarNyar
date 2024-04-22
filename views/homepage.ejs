@@ -1,29 +1,24 @@
-<%- include("./includes/head.ejs") %>
-<header>
-  <h1>Home Page</h1>
-  <p>
-    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Inventore
-    architecto modi iste magni ipsam fugiat officia quam magnam, nulla, natus
-    alias totam dolorem facere earum nemo possimus explicabo iusto iure.
-  </p>
-  <a href="/admin/create-post">Go to create post</a>
-</header>
-<hr />
-
-<% if(postsArr.length < 1) { %>
+<%- include("./includes/head.ejs") %> <% if(postsArr.length < 1) { %>
 <div class="no-posts">
   <h1>No Posts Found?</h1>
   <p>Create a new post here...</p>
-  <a href="/admin/create-post">Create a new post</a>
+  <form action="/admin/create-post" method="get">
+    <button>Create Post</button>
+  </form>
 </div>
 <% } else { %>
-<h1>Posts</h1>
+<h1 class="posts">Posts</h1>
 <div class="post-cnt">
   <% for(let post of postsArr) { %>
   <div class="post-card">
-    <h1 class="post-title"><%= post.title %></h1>
-    <p class="post-desc"><%= post.description %></p>
+    <h1 class="post-title"><%= post.title.toUpperCase() %></h1>
+    <p class="post-desc"><%= post.description.substring(0, 80) + "..." %></p>
+    <hr />
+    <form action="/post-details/<%= post.id %>" method="get">
+      <button>Details</button>
+    </form>
   </div>
   <% } %>
 </div>
+
 <% } %> <%- include("./includes/foot.ejs") %>

@@ -1,13 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
 
-const { posts } = require("./admin");
+const postController = require("../controllers/post");
 
-router.get("/", (req, res) => {
-  console.log(posts);
-  // res.sendFile(path.join(__dirname, "../views/homepage.html"));
-  res.render("homepage", { title: "Home Page", postsArr: posts });
-});
+router.get("/", postController.renderHomePage);
+
+router.get("/post-details/:postId", postController.getPostDetails);
 
 module.exports = router;

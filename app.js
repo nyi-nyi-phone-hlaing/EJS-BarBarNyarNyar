@@ -13,7 +13,7 @@ app.set("views", "views");
 
 // router import
 const postRoutes = require("./routes/post");
-const { adminRoutes } = require("./routes/admin");
+const adminRoutes = require("./routes/admin");
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
