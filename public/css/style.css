@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  width: 100%;
+}
+
+header h1 {
+  text-align: center;
+}
+
+header p {
+  color: red;
+  text-align: center;
+}
+
+form {
+  width: 600px;
+  margin: 0 auto;
+}
+
+form .field {
+  display: flex;
+  flex-direction: column;
+}
+
+form .field label {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+form .field input,
+form .field textarea {
+  padding: 5px 15px;
+  outline: none;
+  margin-bottom: 10px;
+  resize: none;
+}
+
+form button {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  background: cornflowerblue;
+  border: none;
+  font-weight: 700;
+}
+
+a {
+  display: block;
+  width: fit-content;
+  background: cornflowerblue;
+  color: #000;
+  text-decoration: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+
+.no-posts {
+  margin: 10px auto;
+  padding: 10px 20px;
+  width: fit-content;
+  background: #f2f2f2;
+}
+
+.no-posts h1 {
+  font-size: 22px;
+}
+
+.no-posts p,
+.no-posts a {
+  font-size: 16px;
+}
+
+.post-cnt {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 10px;
+}
+
+.post-card {
+  background: #f2f2f2;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.post-title {
+  font-size: 22px;
+}
+
+.post-desc {
+  font-size: 18px;
+}
