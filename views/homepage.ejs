@@ -2,9 +2,14 @@
 <div class="no-posts">
   <h1>No Posts Found?</h1>
   <p>Create a new post here...</p>
-  <form action="/admin/create-post" method="get">
+  <!-- <form action="/admin/create-post" method="get">
     <button>Create Post</button>
-  </form>
+  </form> -->
+  <div class="nav-routing">
+    <a class="create-route-btn w-full" href="/admin/create-post"
+      >Create a new Post</a
+    >
+  </div>
 </div>
 <% } else { %>
 <h1 class="posts">Posts</h1>
@@ -14,9 +19,12 @@
     <h1 class="post-title"><%= post.title.toUpperCase() %></h1>
     <p class="post-desc"><%= post.description.substring(0, 80) + "..." %></p>
     <hr />
-    <form action="/post-details/<%= post.id %>" method="get">
+    <!-- <form action="/post-details/<%= post.id %>" method="get">
       <button>Details</button>
-    </form>
+    </form> -->
+    <div class="routing">
+      <a class="route-btn" href="/post-details/<%= post.id %>">Details</a>
+    </div>
   </div>
   <% } %>
 </div>

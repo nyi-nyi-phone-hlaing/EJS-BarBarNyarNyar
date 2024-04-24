@@ -1,7 +1,13 @@
 const posts = [];
 
+const Post = require("../models/post");
+
 exports.renderHomePage = (req, res) => {
-  res.render("homepage", { title: "Home Page", postsArr: posts });
+  Post.getAllPost()
+    .then(([rows]) => {
+      res.render("homepage", { title: "Home Page", postsArr: rows });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.renderCreatePage = (req, res) => {
@@ -10,17 +16,21 @@ exports.renderCreatePage = (req, res) => {
 
 exports.createPost = (req, res) => {
   const { title, description, photo } = req.body;
-  posts.push({
-    id: Math.floor(Math.random() * 1e99),
-    title,
-    description,
-    imgUrl: photo,
-  });
-  res.redirect("/");
+
+  const post = new Post(title, description, photo);
+  post
+    .setPost()
+    .then((result) => {
+      res.redirect("/");
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.getPostDetails = (req, res) => {
-  const postId = Number(req.params.postId);
-  const post = posts.find((post) => post.id === postId);
-  res.render("details", { title: post.title, post });
+  const postId = req.params.postId;
+  Post.getOnePost(postId)
+    .then(([row]) => {
+      res.render("details", { title: row[0].title, post: row[0] });
+    })
+    .catch((err) => console.log(err));
 };

@@ -16,6 +16,30 @@ button {
   cursor: pointer;
 }
 
+.routing {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  margin-top: 6px;
+}
+
+.routing .route-btn {
+  display: block;
+  width: fit-content;
+  padding: 5px 10px;
+  background: #000;
+  border: none;
+  outline: none;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.w-full {
+  width: 100% !important;
+}
+
 .main {
   width: 700px;
   height: 100%;
@@ -43,13 +67,22 @@ button {
   text-decoration: none;
 }
 
-.nav-bar form button {
+.nav-bar .nav-routing .nav-route-btn,
+.create-route-btn {
+  display: block;
+  width: fit-content;
   padding: 5px 10px;
   background: #fff;
   border: none;
   outline: none;
   color: #000;
   border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.create-route-btn {
+  text-align: center;
 }
 
 .no-posts {

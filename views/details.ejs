@@ -1,8 +1,8 @@
 <%- include("./includes/head.ejs") %>
 
 <h1 class="detail-title"><%= post.title %></h1>
-<% if(post.imgUrl) { %>
-<img class="detail-image" src="<%= post.imgUrl %>" alt="<%= post.title %>" />
+<% if(post.image_url) { %>
+<img class="detail-image" src="<%= post.image_url %>" alt="<%= post.title %>" />
 <% } %>
 <p class="detail-desc"><%= post.description %></p>
 <%- include("./includes/foot.ejs") %>
