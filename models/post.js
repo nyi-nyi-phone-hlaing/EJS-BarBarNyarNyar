@@ -1,23 +1,26 @@
-const db = require("../utils/database");
-module.exports = class Post {
-  constructor(title, description, image_url) {
-    this.title = title;
-    this.description = description;
-    this.image_url = image_url;
-  }
+const Sequelize = require("sequelize");
+const sequelize = require("../utils/database");
 
-  setPost() {
-    return db.execute(
-      "INSERT INTO posts(title,description,image_url) VALUES(?,?,?)",
-      [this.title, this.description, this.image_url]
-    );
-  }
+// ? Creating Post Model ( Schema )
+const Post = sequelize.define("post", {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true,
+  },
+  title: {
+    type: Sequelize.TEXT("long"),
+    allowNull: false,
+  },
+  description: {
+    type: Sequelize.TEXT("long"),
+    allowNull: false,
+  },
+  image_url: {
+    type: Sequelize.TEXT("long"),
+    allowNull: false,
+  },
+});
 
-  static getAllPost() {
-    return db.execute("SELECT * FROM posts");
-  }
-
-  static getOnePost(id) {
-    return db.execute("SELECT * FROM posts WHERE posts.id = ?", [id]);
-  }
-};
+module.exports = Post;

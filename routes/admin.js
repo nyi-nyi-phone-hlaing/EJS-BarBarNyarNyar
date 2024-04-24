@@ -3,9 +3,10 @@ const router = express.Router();
 
 const postController = require("../controllers/post");
 
-// GET -> /admin/create-post
+// ? Method : GET =>  Rendering Create Post Page ( )
 router.get("/create-post", postController.renderCreatePage);
 
+// ? Method : POST => Create a new Post
 router.post("/", postController.createPost);
 
 module.exports = router;

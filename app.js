@@ -1,39 +1,55 @@
-// default
+// TODO: default package
 const express = require("express");
 const path = require("path");
 
-// third-party package
+// TODO: third-party package
 const bodyParser = require("body-parser");
 
+// TODO: local file import
+const sequelize = require("./utils/database");
+
+// ? Create express server
 const app = express();
 
-// templating engine
+// ?  Set view engine
 app.set("view engine", "ejs");
 app.set("views", "views");
 
-// router import
+// ? Routes
 const postRoutes = require("./routes/post");
 const adminRoutes = require("./routes/admin");
 
+// ? Middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// ? Middleware for /post route
 app.use("/post", (req, res, next) => {
   console.log("I'm post middleware ");
   next();
 });
 
+// ? Middleware for all routes
 app.use((req, res, next) => {
   console.log("I'm parent middleware ");
   next();
 });
 
+// ? Middleware for /admin route
 app.use("/admin", (req, res, next) => {
   console.log("I'm admin middleware");
   next();
 });
 
+// ? Routes
 app.use("/admin", adminRoutes);
 app.use(postRoutes);
 
-app.listen(8000);
+// ? Start server
+sequelize
+  .sync()
+  .then((_) => {
+    console.log("database connected!");
+    app.listen(8000);
+  })
+  .catch((err) => console.log(err));
