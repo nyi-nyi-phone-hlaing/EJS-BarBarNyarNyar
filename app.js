@@ -39,5 +39,6 @@ app.use("/admin", (req, res, next) => {
 app.use("/admin", adminRoutes);
 app.use(postRoutes);
 
+//? mongodb connect
 mongodbConnector();
 app.listen(8000);
