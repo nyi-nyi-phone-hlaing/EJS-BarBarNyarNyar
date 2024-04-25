@@ -5,6 +5,9 @@ const path = require("path");
 // third-party package
 const bodyParser = require("body-parser");
 
+//? local import
+const mongodbConnector = require("./utils/database");
+
 const app = express();
 
 // templating engine
@@ -36,4 +39,5 @@ app.use("/admin", (req, res, next) => {
 app.use("/admin", adminRoutes);
 app.use(postRoutes);
 
+mongodbConnector();
 app.listen(8000);
