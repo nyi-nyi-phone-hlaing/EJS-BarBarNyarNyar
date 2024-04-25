@@ -16,8 +16,21 @@
 <div class="post-cnt">
   <% for(let post of postsArr) { %>
   <div class="post-card">
-    <h1 class="post-title"><%= post.title.toUpperCase() %></h1>
-    <p class="post-desc"><%= post.description.substring(0, 80) + "..." %></p>
+    <h1 class="post-title">
+      <% if(post.title.length > 25) { %> <%=
+      post.title.toUpperCase().substring(0, 25) + "..." %> <% } else { %> <%=
+      post.title.toUpperCase() %> <% } %>
+    </h1>
+    <% if(post.image_url) { %>
+    <img
+      class="preview-image"
+      src="<%= post.image_url %>"
+      alt="<%= post.title %>" />
+    <% } %>
+    <p class="post-desc">
+      <% if(post.description.length > 30) { %> <%= post.description.substring(0,
+      30) + "..." %> <% } else { %> <%= post.description %> <% } %>
+    </p>
     <hr />
     <!-- <form action="/post-details/<%= post.id %>" method="get">
       <button>Details</button>

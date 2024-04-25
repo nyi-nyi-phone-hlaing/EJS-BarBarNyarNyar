@@ -25,19 +25,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // ? Middleware for /post route
 app.use("/post", (req, res, next) => {
-  console.log("I'm post middleware ");
   next();
 });
 
 // ? Middleware for all routes
 app.use((req, res, next) => {
-  console.log("I'm parent middleware ");
   next();
 });
 
 // ? Middleware for /admin route
 app.use("/admin", (req, res, next) => {
-  console.log("I'm admin middleware");
   next();
 });
 
