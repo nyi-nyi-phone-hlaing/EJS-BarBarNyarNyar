@@ -18,12 +18,13 @@ exports.renderCreatePage = (req, res) => {
 // ? Create a new Post
 exports.createPost = (req, res) => {
   const { title, description, photo } = req.body;
-
-  Post.create({
-    title,
-    description,
-    image_url: photo,
-  })
+  // ? Association ( Special Method ) req.user.createPost => Post is a model name
+  req.user
+    .createPost({
+      title,
+      description,
+      image_url: photo,
+    })
     .then((_) => {
       console.log("New post created");
       res.redirect("/");
