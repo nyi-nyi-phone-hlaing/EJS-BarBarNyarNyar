@@ -1,0 +1,26 @@
+<%- include("./includes/head.ejs") %>
+
+<div class="row-flex">
+  <h1 class="detail-title">Edit your post here.</h1>
+  <a class="back-btn" href="/post/<%= post._id %>">Back to Post</a>
+</div>
+<form class="post-form" action="/admin/post/edit" method="post">
+  <input type="text" name="postId" value="<%= post._id %>" hidden />
+  <div class="field">
+    <label for="title">Title</label>
+    <input type="text" name="title" id="title" value="<%= post.title %>" />
+  </div>
+  <div class="field">
+    <label for="photo">Enter Image Url</label>
+    <input type="url" name="photo" id="photo" value="<%= post.image_url %>" />
+  </div>
+  <div class="field">
+    <label for="description">Description</label>
+    <textarea rows="5" name="description" id="description">
+ <%= post.description %> </textarea
+    >
+  </div>
+  <button type="submit">Save Change</button>
+</form>
+
+<%- include("./includes/foot.ejs") %>

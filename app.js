@@ -6,7 +6,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 
 //? local import
-const mongodbConnector = require("./utils/database");
+const { mongodbConnector } = require("./utils/database");
 
 const app = express();
 

@@ -5,6 +5,6 @@ const postController = require("../controllers/post");
 
 router.get("/", postController.renderHomePage);
 
-router.get("/post-details/:postId", postController.getPostDetails);
+router.get("/post/:postId", postController.getPostDetails);
 
 module.exports = router;
