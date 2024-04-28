@@ -4,6 +4,10 @@
   <h1 class="detail-title"><%= post.title %></h1>
   <a class="back-btn" href="/">Back to Home</a>
 </div>
+<div class="author">
+  <p>Posted by: <span> <%= post.userId.username %> </span></p>
+  <p>Posted on: <span> <%= post.createdAt %> </span></p>
+</div>
 <% if(post.image_url) { %>
 <img class="detail-image" src="<%= post.image_url %>" alt="<%= post.title %>" />
 <% } %>

@@ -2,10 +2,11 @@ const Post = require("../models/post");
 
 exports.renderHomePage = (req, res) => {
   Post.find()
+    .populate("userId", "username email")
     .sort({ createdAt: -1 })
-    .then((posts) =>
-      res.render("homepage", { title: "Home Page", postsArr: posts })
-    )
+    .then((posts) => {
+      res.render("homepage", { title: "Home Page", postsArr: posts });
+    })
     .catch((err) => console.log(err));
 };
 
@@ -16,9 +17,9 @@ exports.renderCreatePage = (req, res) => {
 exports.createPost = (req, res) => {
   const { title, description, photo } = req.body;
 
-  Post.create({ title, description, image_url: photo })
+  Post.create({ title, description, image_url: photo, userId: req.user })
     .then((result) => {
-      console.log("Post Created!");
+      console.log(`Post Created At ${req.user.username}`);
       res.redirect("/");
     })
     .catch((err) => console.log(err));
@@ -27,6 +28,7 @@ exports.createPost = (req, res) => {
 exports.getPostDetails = (req, res) => {
   const postId = req.params.postId;
   Post.findById(postId)
+    .populate("userId", "username email")
     .then((post) => res.render("details", { title: post.title, post }))
     .catch((err) => console.log(err));
 };

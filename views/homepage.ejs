@@ -36,6 +36,9 @@
       <button>Details</button>
     </form> -->
     <div class="routing">
+      <div class="post-owner">
+        <p><%= post.userId.username %></p>
+      </div>
       <a class="route-btn" href="/post/<%= post._id %>">Details</a>
     </div>
   </div>

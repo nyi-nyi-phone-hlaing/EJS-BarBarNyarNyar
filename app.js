@@ -8,6 +8,7 @@ const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
 
 //? local import
+const User = require("./models/user");
 
 const app = express();
 
@@ -22,12 +23,32 @@ const adminRoutes = require("./routes/admin");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+//? Middleware
+app.use((req, res, next) => {
+  User.findById("662dd13d32e256d30efa38c2").then((user) => {
+    req.user = user;
+    next();
+  });
+});
+
 app.use("/admin", adminRoutes);
 app.use(postRoutes);
 
 //? mongodb connect
 mongoose
   .connect(process.env.MONGODB_URI)
+  .then((_) => {
+    return User.findOne().then((user) => {
+      if (!user) {
+        User.create({
+          username: "codelab_mm",
+          email: "codelabmm@gmail.com",
+          password: "abcdefg",
+        });
+      }
+      return user;
+    });
+  })
   .then((_) => {
     console.log("Connected to MongoDB");
     app.listen(8000);
