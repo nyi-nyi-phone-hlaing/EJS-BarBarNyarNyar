@@ -16,11 +16,14 @@
           </form> -->
 
           <div class="nav-routing">
-            <% if(isLogin) { %>
-              <a class="nav-route-btn" href="/admin/create-post">Create</a>
+            <% if(isLogin){ %>
+            <a class="nav-route-btn" href="/admin/create-post">Create</a>
+            <form action="/logout" method="post">
+              <button type="submit">Logout</button>
+            </form>
             <% } else { %>
-              <a class="nav-route-btn" href="/login">Login</a>
-              <a class="nav-route-btn" href="/register">Register</a>
+            <a class="nav-route-btn" href="/login">Login</a>
+            <a class="nav-route-btn" href="/register">Register</a>
             <% } %>
           </div>
         </div>

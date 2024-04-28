@@ -81,7 +81,8 @@ button {
 }
 
 .nav-bar .nav-routing .nav-route-btn,
-.create-route-btn {
+.create-route-btn,
+.nav-routing form button {
   display: block;
   width: fit-content;
   padding: 5px 10px;

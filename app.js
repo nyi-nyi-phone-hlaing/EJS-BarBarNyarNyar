@@ -6,6 +6,8 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 //? local import
 const User = require("./models/user");
@@ -21,10 +23,29 @@ const postRoutes = require("./routes/post");
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
 
+const store = new MongoDBStore({
+  uri: process.env.MONGODB_URI,
+  collection: "sessions",
+});
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  session({
+    secret: process.env.SESSION_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store,
+  })
+);
 
 //? Middleware
+
+app.use((req, res, next) => {
+  res.locals.isLogin = req.session.isLogin ? true : false;
+  next();
+});
+
 app.use((req, res, next) => {
   User.findById("662dd13d32e256d30efa38c2").then((user) => {
     req.user = user;
@@ -38,7 +59,7 @@ app.use(postRoutes);
 
 //? mongodb connect
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URL)
   .then((_) => {
     return User.findOne().then((user) => {
       if (!user) {

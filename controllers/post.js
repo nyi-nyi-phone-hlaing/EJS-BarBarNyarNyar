@@ -1,9 +1,6 @@
 const Post = require("../models/post");
 
 exports.renderHomePage = (req, res) => {
-  const cookie = req.get("Cookie")
-    ? req.get("Cookie").split("=")[1].trim() === "true"
-    : false;
   Post.find()
     .populate("userId", "username email")
     .sort({ createdAt: -1 })
@@ -11,24 +8,21 @@ exports.renderHomePage = (req, res) => {
       res.render("homepage", {
         title: "Home Page",
         postsArr: posts,
-        isLogin: cookie,
+        isLogin: req.session.isLogin ? true : false,
       });
     })
     .catch((err) => console.log(err));
 };
 
 exports.renderCreatePage = (req, res) => {
-  const cookie = req.get("Cookie")
-    ? req.get("Cookie").split("=")[1].trim() === "true"
-    : false;
-  res.render("create-post", { title: "Create Post", isLogin: cookie });
+  res.render("create-post", { title: "Create Post" });
 };
 
 exports.createPost = (req, res) => {
   const { title, description, photo } = req.body;
 
   Post.create({ title, description, image_url: photo, userId: req.user })
-    .then((result) => {
+    .then((_) => {
       console.log(`Post Created At ${req.user.username}`);
       res.redirect("/");
     })
@@ -54,14 +48,9 @@ exports.deletePost = (req, res) => {
 };
 
 exports.renderEditPage = (req, res) => {
-  const cookie = req.get("Cookie")
-    ? req.get("Cookie").split("=")[1].trim() === "true"
-    : false;
   const { postId } = req.params;
   Post.findById(postId)
-    .then((post) =>
-      res.render("edit-post", { title: "Edit Post", post, isLogin: cookie })
-    )
+    .then((post) => res.render("edit-post", { title: "Edit Post", post }))
     .catch((err) => console.log(err));
 };
 

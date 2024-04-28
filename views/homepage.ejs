@@ -1,6 +1,7 @@
 <%- include("./includes/head.ejs") %>
 <!-- SPACE -->
-<% if(postsArr.length < 1) { %> <% if(isLogin) { %>
+<% if(postsArr.length < 1) { %> 
+
 <div class="no-posts">
   <h1>No Posts Found?</h1>
   <p>Create a new post here...</p>
@@ -13,7 +14,8 @@
     >
   </div>
 </div>
-<% } %> <% } else { %>
+
+ <% } else { %> 
 <h1 class="posts">Posts</h1>
 <div class="post-cnt">
   <% for(let post of postsArr) { %>
