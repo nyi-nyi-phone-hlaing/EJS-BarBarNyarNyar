@@ -1,7 +1,8 @@
 const Post = require("../models/post");
 
 exports.renderHomePage = (req, res) => {
-  Post.getAllPost()
+  Post.find()
+    .sort({ createdAt: -1 })
     .then((posts) =>
       res.render("homepage", { title: "Home Page", postsArr: posts })
     )
@@ -14,25 +15,25 @@ exports.renderCreatePage = (req, res) => {
 
 exports.createPost = (req, res) => {
   const { title, description, photo } = req.body;
-  const post = new Post(title, description, photo);
-  post
-    .create()
-    .then((result) => console.log("Post Created!"))
+
+  Post.create({ title, description, image_url: photo })
+    .then((result) => {
+      console.log("Post Created!");
+      res.redirect("/");
+    })
     .catch((err) => console.log(err));
-  res.redirect("/");
 };
 
 exports.getPostDetails = (req, res) => {
   const postId = req.params.postId;
-  Post.getPostById(postId)
+  Post.findById(postId)
     .then((post) => res.render("details", { title: post.title, post }))
     .catch((err) => console.log(err));
 };
 
 exports.deletePost = (req, res) => {
   const { postId } = req.params;
-  console.log(postId);
-  Post.deletePostById(postId)
+  Post.findByIdAndDelete(postId)
     .then((result) => {
       console.log("Post Deleted!");
       res.redirect("/");
@@ -42,20 +43,25 @@ exports.deletePost = (req, res) => {
 
 exports.renderEditPage = (req, res) => {
   const { postId } = req.params;
-  Post.getPostById(postId)
+  Post.findById(postId)
     .then((post) => res.render("edit-post", { title: "Edit Post", post }))
     .catch((err) => console.log(err));
 };
 
 exports.updatePost = (req, res) => {
   const { postId, title, description, photo } = req.body;
-  console.log(postId);
-  const post = new Post(title, description, photo);
-  post
-    .updatePost(postId)
-    .then((result) => {
+
+  Post.findByIdAndUpdate(postId, { title, description, image_url: photo })
+    .then((_) => {
       console.log("Post Updated!");
       res.redirect(`/post/${postId}`);
     })
     .catch((err) => console.log(err));
+
+  // Post.updateOne({ _id: postId }, { title, description, image_url: photo })
+  //   .then((result) => {
+  //     console.log("Post Updated!");
+  //     res.redirect(`/post/${postId}`);
+  //   })
+  //   .catch((err) => console.log(err));
 };
