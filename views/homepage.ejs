@@ -1,17 +1,19 @@
-<%- include("./includes/head.ejs") %> <% if(postsArr.length < 1) { %>
+<%- include("./includes/head.ejs") %>
+<!-- SPACE -->
+<% if(postsArr.length < 1) { %> <% if(isLogin) { %>
 <div class="no-posts">
   <h1>No Posts Found?</h1>
   <p>Create a new post here...</p>
   <!-- <form action="/admin/create-post" method="get">
-    <button>Create Post</button>
-  </form> -->
+      <button>Create Post</button>
+    </form> -->
   <div class="nav-routing">
     <a class="create-route-btn w-full" href="/admin/create-post"
       >Create a new Post</a
     >
   </div>
 </div>
-<% } else { %>
+<% } %> <% } else { %>
 <h1 class="posts">Posts</h1>
 <div class="post-cnt">
   <% for(let post of postsArr) { %>

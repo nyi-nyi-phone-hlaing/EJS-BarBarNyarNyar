@@ -1,17 +1,27 @@
 const Post = require("../models/post");
 
 exports.renderHomePage = (req, res) => {
+  const cookie = req.get("Cookie")
+    ? req.get("Cookie").split("=")[1].trim() === "true"
+    : false;
   Post.find()
     .populate("userId", "username email")
     .sort({ createdAt: -1 })
     .then((posts) => {
-      res.render("homepage", { title: "Home Page", postsArr: posts });
+      res.render("homepage", {
+        title: "Home Page",
+        postsArr: posts,
+        isLogin: cookie,
+      });
     })
     .catch((err) => console.log(err));
 };
 
 exports.renderCreatePage = (req, res) => {
-  res.render("create-post", { title: "Create Post" });
+  const cookie = req.get("Cookie")
+    ? req.get("Cookie").split("=")[1].trim() === "true"
+    : false;
+  res.render("create-post", { title: "Create Post", isLogin: cookie });
 };
 
 exports.createPost = (req, res) => {
@@ -44,9 +54,14 @@ exports.deletePost = (req, res) => {
 };
 
 exports.renderEditPage = (req, res) => {
+  const cookie = req.get("Cookie")
+    ? req.get("Cookie").split("=")[1].trim() === "true"
+    : false;
   const { postId } = req.params;
   Post.findById(postId)
-    .then((post) => res.render("edit-post", { title: "Edit Post", post }))
+    .then((post) =>
+      res.render("edit-post", { title: "Edit Post", post, isLogin: cookie })
+    )
     .catch((err) => console.log(err));
 };
 

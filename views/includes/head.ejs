@@ -16,7 +16,12 @@
           </form> -->
 
           <div class="nav-routing">
-            <a class="nav-route-btn" href="/admin/create-post">Create</a>
+            <% if(isLogin) { %>
+              <a class="nav-route-btn" href="/admin/create-post">Create</a>
+            <% } else { %>
+              <a class="nav-route-btn" href="/login">Login</a>
+              <a class="nav-route-btn" href="/register">Register</a>
+            <% } %>
           </div>
         </div>
       </nav>

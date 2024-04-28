@@ -74,6 +74,12 @@ button {
   text-decoration: none;
 }
 
+.nav-routing {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .nav-bar .nav-routing .nav-route-btn,
 .create-route-btn {
   display: block;
@@ -205,6 +211,7 @@ button {
   color: #000;
   border-radius: 5px;
   font-weight: 600;
+  margin-top: 10px;
 }
 
 .detail-title {

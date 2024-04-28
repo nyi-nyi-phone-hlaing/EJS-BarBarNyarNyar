@@ -19,6 +19,7 @@ app.set("views", "views");
 // router import
 const postRoutes = require("./routes/post");
 const adminRoutes = require("./routes/admin");
+const authRoutes = require("./routes/auth");
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -32,6 +33,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/admin", adminRoutes);
+app.use(authRoutes);
 app.use(postRoutes);
 
 //? mongodb connect
