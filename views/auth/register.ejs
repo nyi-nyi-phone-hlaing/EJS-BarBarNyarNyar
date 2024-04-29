@@ -4,7 +4,9 @@
   <h1 class="detail-title">Register a new account!</h1>
   <a class="back-btn" href="/">Back to Home</a>
 </div>
-
+<% if(errorMsg) { %>
+<p class="warn-msg"><%= errorMsg %></p>
+<% } %>
 <form class="post-form" action="/register" method="post">
   <input hidden value="<%= csrfToken %>" name="_csrf" />
   <div class="field">

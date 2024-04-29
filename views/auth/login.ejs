@@ -4,7 +4,9 @@
   <h1 class="detail-title">Login to your account!</h1>
   <a class="back-btn" href="/">Back to Home</a>
 </div>
-
+<% if(errorMsg) { %>
+<p class="err-msg"><%= errorMsg %></p>
+<% } %>
 <form class="post-form" action="/login" method="post">
   <input hidden value="<%= csrfToken %>" name="_csrf" />
   <div class="field">

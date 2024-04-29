@@ -283,3 +283,25 @@ button {
 .post-owner p {
   font-size: 15px;
 }
+
+.err-msg {
+  width: 70%;
+  margin: 5px auto;
+  text-align: center;
+  padding: 5px;
+  color: #82002e;
+  background: #ffbad1;
+  font-size: 16px;
+  border: 1px solid #82002e;
+}
+
+.warn-msg {
+  width: 70%;
+  margin: 5px auto;
+  text-align: center;
+  padding: 5px;
+  color: #916f00;
+  background: #fbff89;
+  font-size: 16px;
+  border: 1px solid #916f00;
+}
