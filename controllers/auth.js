@@ -1,5 +1,16 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const dotenv = require("dotenv").config();
+
+const nodemailer = require("nodemailer");
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MAIL_SENDER,
+    pass: process.env.MAIL_PASSWORD,
+  },
+});
+
 const saltRounds = 10;
 //? Rendering Login Page
 exports.getLoginPage = (req, res) => {
@@ -77,6 +88,25 @@ exports.registerAccount = (req, res) => {
         .then((_) => {
           res.redirect("/login");
           console.log("Register Successfully");
+          transporter.sendMail(
+            {
+              from: process.env.MAIL_SENDER,
+              to: email,
+              subject: "Register Successfully",
+              text: `Dear ${username} ,\n\nThank you for registering on our website. Your registration was successful.\n\nBest regards,\nThe Website Team`,
+              html: `<html>
+                      <body>
+                        <p>Dear ${username},</p>
+                        <p>Thank you for registering on our website. Your registration was successful.</p>
+                        <p>Best regards,<br>
+                        The Website Team</p>
+                      </body>
+                    </html>`,
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         });
     })
     .catch((err) => console.log(err));
