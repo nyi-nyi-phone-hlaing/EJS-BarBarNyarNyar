@@ -1,5 +1,6 @@
 const Post = require("../models/post");
 
+//? Rendering Home Page
 exports.renderHomePage = (req, res) => {
   Post.find()
     .populate("userId", "username email")
@@ -14,13 +15,14 @@ exports.renderHomePage = (req, res) => {
     .catch((err) => console.log(err));
 };
 
+//? Rendering Create Post Page
 exports.renderCreatePage = (req, res) => {
   res.render("create-post", { title: "Create Post" });
 };
 
+//? Handle Create Post
 exports.createPost = (req, res) => {
   const { title, description, photo } = req.body;
-
   Post.create({ title, description, image_url: photo, userId: req.user })
     .then((_) => {
       console.log(`Post Created At ${req.user.username}`);
@@ -29,6 +31,7 @@ exports.createPost = (req, res) => {
     .catch((err) => console.log(err));
 };
 
+//? Handle Post Details
 exports.getPostDetails = (req, res) => {
   const postId = req.params.postId;
   Post.findById(postId)
@@ -37,16 +40,18 @@ exports.getPostDetails = (req, res) => {
     .catch((err) => console.log(err));
 };
 
+//? Handle Delete Post
 exports.deletePost = (req, res) => {
   const { postId } = req.params;
   Post.findByIdAndDelete(postId)
-    .then((result) => {
+    .then((_) => {
       console.log("Post Deleted!");
       res.redirect("/");
     })
     .catch((err) => console.log(err));
 };
 
+//? Render Edit Page
 exports.renderEditPage = (req, res) => {
   const { postId } = req.params;
   Post.findById(postId)
@@ -54,6 +59,7 @@ exports.renderEditPage = (req, res) => {
     .catch((err) => console.log(err));
 };
 
+//? Handle Update Post
 exports.updatePost = (req, res) => {
   const { postId, title, description, photo } = req.body;
 
