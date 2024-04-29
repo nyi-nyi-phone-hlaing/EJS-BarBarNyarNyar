@@ -6,6 +6,7 @@
 </div>
 
 <form class="post-form" action="/login" method="post">
+  <input hidden value="<%= csrfToken %>" name="_csrf" />
   <div class="field">
     <label for="email">Email</label>
     <input type="text" name="email" id="email" />

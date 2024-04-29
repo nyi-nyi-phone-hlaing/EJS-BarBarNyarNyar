@@ -8,9 +8,11 @@ const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
+const csrf = require("csurf");
 
 //? local import
 const User = require("./models/user");
+const { isLoginUser } = require("./middleware/middleware");
 
 //? Creating express app
 const app = express();
@@ -30,6 +32,9 @@ const store = new MongoDBStore({
   collection: "sessions",
 });
 
+//? CSRF protection
+const csrfProtect = csrf();
+
 //? Custom middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -41,25 +46,29 @@ app.use(
     store,
   })
 );
+app.use(csrfProtect);
 
 //? Middleware
 app.use((req, res, next) => {
   res.locals.isLogin = req.session.isLogin ? true : false;
-  // console.log(
-  //   req.session.userInfo ? req.session.userInfo._id : "Not Logged In"
-  // );
+  res.locals.csrfToken = req.csrfToken();
   next();
 });
 
-// app.use((req, res, next) => {
-//   User.findById("662dd13d32e256d30efa38c2").then((user) => {
-//     req.user = user;
-//     next();
-//   });
-// });
+app.use((req, res, next) => {
+  if (req.session.isLogin === undefined) {
+    return next();
+  }
+  User.findById(req.session.userInfo._id)
+    .select("_id username email")
+    .then((user) => {
+      req.user = user;
+      next();
+    });
+});
 
 //? Routes define
-app.use("/admin", adminRoutes);
+app.use("/admin", isLoginUser, adminRoutes);
 app.use(authRoutes);
 app.use(postRoutes);
 

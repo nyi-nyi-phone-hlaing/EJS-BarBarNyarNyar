@@ -5,6 +5,7 @@
   <a class="back-btn" href="/post/<%= post._id %>">Back to Post</a>
 </div>
 <form class="post-form" action="/admin/post/edit" method="post">
+  <input hidden value="<%= csrfToken %>" name="_csrf" />
   <input type="text" name="postId" value="<%= post._id %>" hidden />
   <div class="field">
     <label for="title">Title</label>

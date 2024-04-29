@@ -8,8 +8,6 @@ exports.getLoginPage = (req, res) => {
 
 //? Handle Login
 exports.loginAccount = (req, res) => {
-  // req.session.isLogin = true;
-  // res.redirect("/");
   const { email, password } = req.body;
   User.findOne({ email })
     .then((user) => {
@@ -24,6 +22,9 @@ exports.loginAccount = (req, res) => {
         req.session.userInfo = user;
         req.session.save((err) => {
           res.redirect("/");
+          if (err) {
+            console.log(err);
+          }
         });
       });
     })
@@ -35,7 +36,6 @@ exports.getRegisterPage = (req, res) => {
   res.render("auth/register", { title: "Register" });
 };
 
-//? Handle Register
 //? Handle Register
 exports.registerAccount = (req, res) => {
   const { username, email, password } = req.body;

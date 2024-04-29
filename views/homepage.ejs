@@ -5,9 +5,6 @@
 <div class="no-posts">
   <h1>No Posts Found?</h1>
   <p>Create a new post here...</p>
-  <!-- <form action="/admin/create-post" method="get">
-      <button>Create Post</button>
-    </form> -->
   <div class="nav-routing">
     <a class="create-route-btn w-full" href="/admin/create-post"
       >Create a new Post</a
@@ -35,9 +32,6 @@
       30) + "..." %> <% } else { %> <%= post.description %> <% } %>
     </p>
     <hr />
-    <!-- <form action="/post-details/<%= post.id %>" method="get">
-      <button>Details</button>
-    </form> -->
     <div class="routing">
       <div class="post-owner">
         <p><%= post.userId.username %></p>
