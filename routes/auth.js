@@ -18,4 +18,19 @@ router.post("/register", authController.registerAccount);
 //? POST -> /logout
 router.post("/logout", authController.logout);
 
+//? GET -> /reset-password
+router.get("/reset-password", authController.getResetPage);
+
+//? POST -> /reset
+router.post("/reset", authController.resetLinkSend);
+
+//? GET -> /feedback
+router.get("/feedback", authController.getFeedbackPage);
+
+//? GET -> /reset-password/{token}
+router.get("/reset-password/:token", authController.getResetForm);
+
+//? POST -> /change-new-password
+router.post("/change-new-password", authController.changeNewPassword);
+
 module.exports = router;

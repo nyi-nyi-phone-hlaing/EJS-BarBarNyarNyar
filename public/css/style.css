@@ -117,6 +117,7 @@ button {
 .no-posts p {
   color: #fff;
   margin-bottom: 10px;
+  font-size: 16px;
 }
 
 .no-posts form button {
@@ -304,4 +305,12 @@ button {
   background: #fbff89;
   font-size: 16px;
   border: 1px solid #916f00;
+}
+
+.forget-password {
+  text-decoration: none;
+  color: cornflowerblue;
+  font-size: 16px;
+  display: block;
+  margin-top: 10px;
 }

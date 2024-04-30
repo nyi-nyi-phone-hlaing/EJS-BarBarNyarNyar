@@ -1,0 +1,25 @@
+<%- include("../includes/head.ejs") %>
+
+<div class="row-flex">
+  <h1 class="detail-title">Register a new account!</h1>
+  <a class="back-btn" href="/">Back to Home</a>
+</div>
+<% if(errorMsg) { %>
+<p class="warn-msg"><%= errorMsg %></p>
+<% } %>
+<form class="post-form" action="/change-new-password" method="post">
+  <input hidden value="<%= csrfToken %>" name="_csrf" />
+  <input hidden value="<%= token %>" name="token" />
+  <input hidden value="<%= user_id %>" name="user_id" />
+  <div class="field">
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" />
+  </div>
+  <div class="field">
+    <label for="confirmPassword">Comfirm Password</label>
+    <input type="password" name="confirmPassword" id="confirmPassword" />
+  </div>
+  <button type="submit">Change New Password</button>
+</form>
+
+<%- include("../includes/foot.ejs") %>

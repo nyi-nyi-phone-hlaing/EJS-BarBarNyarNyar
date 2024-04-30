@@ -20,6 +20,8 @@ const userSchema = new Schema(
       require: true,
       minLength: 6,
     },
+    resetToken: String,
+    tokenExp: Date,
   },
   {
     timestamps: true,
