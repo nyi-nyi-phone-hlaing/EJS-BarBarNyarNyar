@@ -11,15 +11,30 @@
   <input hidden value="<%= csrfToken %>" name="_csrf" />
   <div class="field">
     <label for="username">Username</label>
-    <input type="text" name="username" id="username" />
+    <input
+      type="text"
+      name="username"
+      id="username"
+      value="<%= oldFormData.username %>"
+      required />
   </div>
   <div class="field">
     <label for="email">Email</label>
-    <input type="text" name="email" id="email" />
+    <input
+      type="text"
+      name="email"
+      id="email"
+      value="<%= oldFormData.email %>"
+      required />
   </div>
   <div class="field">
     <label for="password">Password</label>
-    <input type="password" name="password" id="password" />
+    <input
+      type="password"
+      name="password"
+      id="password"
+      value="<%= oldFormData.password %>"
+      required />
   </div>
   <button type="submit">Register</button>
 </form>

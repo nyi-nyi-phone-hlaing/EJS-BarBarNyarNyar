@@ -1,5 +1,7 @@
 const Post = require("../models/post");
 
+const { validationResult } = require("express-validator");
+
 //? Rendering Home Page
 exports.renderHomePage = (req, res) => {
   Post.find()
@@ -17,12 +19,27 @@ exports.renderHomePage = (req, res) => {
 
 //? Rendering Create Post Page
 exports.renderCreatePage = (req, res) => {
-  res.render("create-post", { title: "Create Post" });
+  console.log(req.body);
+  res.render("create-post", {
+    title: "Create Post",
+    errorMsg: null,
+    oldFormData: { title: "", description: "", photo: "" },
+  });
 };
 
 //? Handle Create Post
 exports.createPost = (req, res) => {
   const { title, description, photo } = req.body;
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).render("create-post", {
+      title: "Create Post",
+      errorMsg: errors.array()[0].msg,
+      oldFormData: { title, description, photo },
+    });
+  }
   Post.create({ title, description, image_url: photo, userId: req.user })
     .then((_) => {
       res.redirect("/");

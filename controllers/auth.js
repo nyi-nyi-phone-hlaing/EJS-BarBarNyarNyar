@@ -2,6 +2,8 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 
+const { validationResult } = require("express-validator");
+
 const {
   mailSendAfterRegister,
   mailSendResetLink,
@@ -17,22 +19,42 @@ exports.getLoginPage = (req, res) => {
   } else {
     message = null;
   }
-  res.render("auth/login", { title: "Login", errorMsg: message });
+  res.render("auth/login", {
+    title: "Login",
+    errorMsg: message,
+    oldFormData: { email: "", password: "" },
+  });
 };
 
 //? Handle Login
 exports.loginAccount = (req, res) => {
   const { email, password } = req.body;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).render("auth/login", {
+      title: "Login",
+      errorMsg: errors.array()[0].msg,
+      oldFormData: { email, password },
+    });
+  }
+
   User.findOne({ email })
     .then((user) => {
       if (!user) {
-        req.flash("error", "Invalid email or password");
-        return res.redirect("/login");
+        return res.status(422).render("auth/login", {
+          title: "Login",
+          errorMsg: "Invalid email or password",
+          oldFormData: { email, password },
+        });
       }
       return bcrypt.compare(password, user.password).then((match) => {
         if (!match) {
-          req.flash("error", "Invalid email or password");
-          return res.redirect("/login");
+          return res.status(422).render("auth/login", {
+            title: "Login",
+            errorMsg: "Invalid email or password",
+            oldFormData: { email, password },
+          });
         }
         req.session.isLogin = true;
         req.session.userInfo = user;
@@ -55,12 +77,25 @@ exports.getRegisterPage = (req, res) => {
   } else {
     message = null;
   }
-  res.render("auth/register", { title: "Register", errorMsg: message });
+  res.render("auth/register", {
+    title: "Register",
+    errorMsg: message,
+    oldFormData: { username: "", email: "", password: "" },
+  });
 };
 
 //? Handle Register
 exports.registerAccount = (req, res) => {
   const { username, email, password } = req.body;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).render("auth/register", {
+      title: "Register",
+      errorMsg: errors.array()[0].msg,
+      oldFormData: { username, email, password },
+    });
+  }
 
   User.findOne({ $or: [{ email }, { username }] })
     .then((user) => {
@@ -165,6 +200,17 @@ exports.getResetForm = (req, res) => {
 
 exports.changeNewPassword = (req, res) => {
   const { password, confirmPassword, token, user_id } = req.body;
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).render("auth/reset-form", {
+      title: "Reset Password",
+      errorMsg: errors.array()[0].msg,
+      user_id,
+      token,
+    });
+  }
   let resetUser;
   User.findOne({
     resetToken: token,

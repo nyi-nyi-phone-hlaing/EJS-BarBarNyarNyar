@@ -3,17 +3,38 @@ const router = express.Router();
 
 const authController = require("../controllers/auth");
 
+const {
+  validateRegisterUsername,
+  validateRegisterEmail,
+  validateRegisterPassword,
+  validateLoginEmail,
+  validateLoginPassword,
+  validateResetPassword,
+  validateResetConfirmPassword,
+} = require("../utils/validation");
+
 //? GET -> /login
 router.get("/login", authController.getLoginPage);
 
 //? POST -> /login
-router.post("/login", authController.loginAccount);
+router.post(
+  "/login",
+  validateLoginEmail("email"),
+  validateLoginPassword("password"),
+  authController.loginAccount
+);
 
 //? GET -> /register
 router.get("/register", authController.getRegisterPage);
 
 //? POST -> /register
-router.post("/register", authController.registerAccount);
+router.post(
+  "/register",
+  validateRegisterUsername("username"),
+  validateRegisterEmail("email"),
+  validateRegisterPassword("password"),
+  authController.registerAccount
+);
 
 //? POST -> /logout
 router.post("/logout", authController.logout);
@@ -31,6 +52,11 @@ router.get("/feedback", authController.getFeedbackPage);
 router.get("/reset-password/:token", authController.getResetForm);
 
 //? POST -> /change-new-password
-router.post("/change-new-password", authController.changeNewPassword);
+router.post(
+  "/change-new-password",
+  validateResetPassword("password"),
+  validateResetConfirmPassword("confirmPassword"),
+  authController.changeNewPassword
+);
 
 module.exports = router;

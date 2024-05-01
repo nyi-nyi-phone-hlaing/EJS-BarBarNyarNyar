@@ -13,11 +13,15 @@
   <input hidden value="<%= user_id %>" name="user_id" />
   <div class="field">
     <label for="password">Password</label>
-    <input type="password" name="password" id="password" />
+    <input type="password" name="password" id="password" required />
   </div>
   <div class="field">
     <label for="confirmPassword">Comfirm Password</label>
-    <input type="password" name="confirmPassword" id="confirmPassword" />
+    <input
+      type="password"
+      name="confirmPassword"
+      id="confirmPassword"
+      required />
   </div>
   <button type="submit">Change New Password</button>
 </form>

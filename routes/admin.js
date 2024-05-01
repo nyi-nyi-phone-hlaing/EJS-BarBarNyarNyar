@@ -3,11 +3,23 @@ const router = express.Router();
 
 const postController = require("../controllers/post");
 
+const {
+  validatePostTitle,
+  validatePostDescription,
+  validatePostPhoto,
+} = require("../utils/validation");
+
 //? GET -> /admin/create-post
 router.get("/create-post", postController.renderCreatePage);
 
 //? POST -> /admin
-router.post("/", postController.createPost);
+router.post(
+  "/",
+  validatePostTitle("title"),
+  validatePostDescription("description"),
+  validatePostPhoto("photo"),
+  postController.createPost
+);
 
 //? POST -> /admin/post/delete/{ID}
 router.post("/post/delete/:postId", postController.deletePost);
