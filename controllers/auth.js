@@ -129,13 +129,10 @@ exports.resetLinkSend = (req, res) => {
         }
         user.resetToken = token;
         user.tokenExp = Date.now() + 180000;
-        return user.save();
-      })
-      .then((result) => {
-        if (result !== undefined) {
+        return user.save().then((_) => {
           res.redirect("/feedback");
           mailSendResetLink(email, token);
-        }
+        });
       })
       .catch((err) => console.log(err));
   });
@@ -187,14 +184,12 @@ exports.changeNewPassword = (req, res) => {
         resetUser.password = hashedPassword;
         resetUser.resetToken = undefined;
         resetUser.tokenExp = undefined;
-        return resetUser.save();
+        return resetUser.save().then((_) => {
+          res.redirect("/login");
+          mailSendResetSuccess(resetUser.email, resetUser.username);
+        });
       }
     })
-    .then((result) => {
-      if (result !== undefined) {
-        res.redirect("/login");
-        mailSendResetSuccess(resetUser.email, resetUser.username);
-      }
-    })
+
     .catch((err) => console.log(err));
 };

@@ -1,7 +1,6 @@
 <%- include("./includes/head.ejs") %>
 <!-- SPACE -->
 <% if(postsArr.length < 1) { %> <% if(isLogin) { %>
-
 <div class="no-posts">
   <h1>No Posts Found?</h1>
   <p>Create a new post here...</p>
@@ -9,6 +8,14 @@
     <a class="create-route-btn w-full" href="/admin/create-post"
       >Create a new Post</a
     >
+  </div>
+</div>
+<% } else { %>
+<div class="no-posts">
+  <h1>Don't have an account?</h1>
+  <p>Rigister a new account here...</p>
+  <div class="nav-routing">
+    <a class="create-route-btn w-full" href="/register">Register</a>
   </div>
 </div>
 <% } %> <% } else { %>

@@ -25,7 +25,6 @@ exports.createPost = (req, res) => {
   const { title, description, photo } = req.body;
   Post.create({ title, description, image_url: photo, userId: req.user })
     .then((_) => {
-      console.log(`Post Created At ${req.user.username}`);
       res.redirect("/");
     })
     .catch((err) => console.log(err));
@@ -43,9 +42,8 @@ exports.getPostDetails = (req, res) => {
 //? Handle Delete Post
 exports.deletePost = (req, res) => {
   const { postId } = req.params;
-  Post.findByIdAndDelete(postId)
+  Post.deleteOne({ _id: postId, userId: req.user._id })
     .then((_) => {
-      console.log("Post Deleted!");
       res.redirect("/");
     })
     .catch((err) => console.log(err));
@@ -55,7 +53,12 @@ exports.deletePost = (req, res) => {
 exports.renderEditPage = (req, res) => {
   const { postId } = req.params;
   Post.findById(postId)
-    .then((post) => res.render("edit-post", { title: "Edit Post", post }))
+    .then((post) => {
+      if (post.userId.toString() !== req.user._id.toString()) {
+        return res.redirect("/");
+      }
+      res.render("edit-post", { title: "Edit Post", post });
+    })
     .catch((err) => console.log(err));
 };
 
@@ -63,11 +66,19 @@ exports.renderEditPage = (req, res) => {
 exports.updatePost = (req, res) => {
   const { postId, title, description, photo } = req.body;
 
-  Post.findByIdAndUpdate(postId, { title, description, image_url: photo })
-    .then((_) => {
-      console.log("Post Updated!");
-      res.redirect(`/post/${postId}`);
+  Post.findById(postId)
+    .then((post) => {
+      if (post.userId.toString() !== req.user._id.toString()) {
+        return res.redirect("/");
+      }
+      post.title = title;
+      post.description = description;
+      post.image_url = photo;
+      return post.save().then((_) => {
+        res.redirect(`/post/${postId}`);
+      });
     })
+
     .catch((err) => console.log(err));
 
   // Post.updateOne({ _id: postId }, { title, description, image_url: photo })

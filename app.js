@@ -26,6 +26,7 @@ app.set("views", "views");
 const postRoutes = require("./routes/post");
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
+const { userInfo } = require("os");
 
 //? Creating mongodb store
 const store = new MongoDBStore({
@@ -52,8 +53,14 @@ app.use(flash());
 
 //? Middleware
 app.use((req, res, next) => {
+  let fakeInfo = {
+    _id: "",
+    username: "",
+    email: "",
+  };
   res.locals.isLogin = req.session.isLogin ? true : false;
   res.locals.csrfToken = req.csrfToken();
+  res.locals.userInfo = req.session.userInfo ? req.session.userInfo : fakeInfo;
   next();
 });
 

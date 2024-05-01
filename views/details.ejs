@@ -11,6 +11,8 @@
 <% if(post.image_url) { %>
 <img class="detail-image" src="<%= post.image_url %>" alt="<%= post.title %>" />
 <% } %>
+<!-- space -->
+<% if(post.userId._id.toString() == userInfo._id.toString()) { %>
 <div class="option-row">
   <form action="/admin/post/delete/<%= post._id %>" method="post">
     <input hidden value="<%= csrfToken %>" name="_csrf" />
@@ -18,5 +20,6 @@
   </form>
   <a class="edit-btn" href="/admin/post/edit/<%= post._id %>">Edit</a>
 </div>
+<% } %>
 <p class="detail-desc"><%= post.description %></p>
 <%- include("./includes/foot.ejs") %>

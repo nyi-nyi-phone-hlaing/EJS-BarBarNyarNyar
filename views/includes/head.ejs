@@ -17,6 +17,8 @@
 
           <div class="nav-routing">
             <% if(isLogin){ %>
+            <p class="nav-username">Hello, <%= userInfo.username %></p>
+            <!-- <a class="nav-route-btn" href="/admin/create-post">Profile</a> -->
             <a class="nav-route-btn" href="/admin/create-post">Create</a>
             <form action="/logout" method="post">
               <input hidden value="<%= csrfToken %>" name="_csrf" />
