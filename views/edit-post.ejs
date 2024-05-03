@@ -3,10 +3,10 @@
 <div class="row-flex">
   <h1 class="detail-title">Edit your post here.</h1>
   <a
-    class="back-btn"
+    class="back-btn with-icon"
     href="/post/<%= isValidationFailed ? oldFormData.postId : post._id %>"
-    >Back to Post</a
-  >
+    ><i class="fa-solid fa-arrow-left"></i
+  ></a>
 </div>
 <% if(errorMsg) { %>
 <p class="err-msg"><%= errorMsg %></p>

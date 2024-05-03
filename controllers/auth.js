@@ -27,7 +27,7 @@ exports.getLoginPage = (req, res) => {
 };
 
 //? Handle Login
-exports.loginAccount = (req, res) => {
+exports.loginAccount = (req, res, next) => {
   const { email, password } = req.body;
 
   const errors = validationResult(req);
@@ -66,7 +66,11 @@ exports.loginAccount = (req, res) => {
         });
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something went wrong. Please try again. ");
+      return next(error);
+    });
 };
 
 //? Rendering Register Page
@@ -85,7 +89,7 @@ exports.getRegisterPage = (req, res) => {
 };
 
 //? Handle Register
-exports.registerAccount = (req, res) => {
+exports.registerAccount = (req, res, next) => {
   const { username, email, password } = req.body;
 
   const errors = validationResult(req);
@@ -122,7 +126,11 @@ exports.registerAccount = (req, res) => {
           mailSendAfterRegister(email, username);
         });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something went wrong. Please try again. ");
+      return next(error);
+    });
 };
 
 //? Handle Logout
@@ -152,7 +160,7 @@ exports.getResetPage = (req, res) => {
   });
 };
 
-exports.resetLinkSend = (req, res) => {
+exports.resetLinkSend = (req, res, next) => {
   const email = req.body.email;
   const errors = validationResult(req);
 
@@ -182,15 +190,19 @@ exports.resetLinkSend = (req, res) => {
           mailSendResetLink(email, token);
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        const error = new Error("Something went wrong. Please try again. ");
+        return next(error);
+      });
   });
 };
 
 //? Render Reset Form
-exports.getResetForm = (req, res) => {
+exports.getResetForm = (req, res, next) => {
   const { token } = req.params;
-  User.findOne({ resetToken: token, tokenExp: { $gt: Date.now() } }).then(
-    (user) => {
+  User.findOne({ resetToken: token, tokenExp: { $gt: Date.now() } })
+    .then((user) => {
       if (user) {
         let message = req.flash("error");
         if (message.length > 0) {
@@ -207,11 +219,15 @@ exports.getResetForm = (req, res) => {
       } else {
         res.redirect("/");
       }
-    }
-  );
+    })
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something went wrong. Please try again. ");
+      return next(error);
+    });
 };
 
-exports.changeNewPassword = (req, res) => {
+exports.changeNewPassword = (req, res, next) => {
   const { password, confirmPassword, token, user_id } = req.body;
 
   const errors = validationResult(req);
@@ -248,6 +264,9 @@ exports.changeNewPassword = (req, res) => {
         });
       }
     })
-
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something went wrong. Please try again. ");
+      return next(error);
+    });
 };

@@ -14,6 +14,7 @@ const flash = require("connect-flash");
 //? local import
 const User = require("./models/user");
 const { isLoginUser } = require("./middleware/middleware");
+const errorController = require("./controllers/error");
 
 //? Creating express app
 const app = express();
@@ -80,6 +81,14 @@ app.use((req, res, next) => {
 app.use("/admin", isLoginUser, adminRoutes);
 app.use(authRoutes);
 app.use(postRoutes);
+
+app.use((err, req, res, next) => {
+  errorController.error500(err, req, res, next);
+});
+
+app.all("*", (req, res) => {
+  errorController.error404(req, res);
+});
 
 //? mongodb connect
 mongoose

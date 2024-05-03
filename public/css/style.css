@@ -275,6 +275,12 @@ button {
   font-size: 16px;
 }
 
+.with-icon {
+  font-size: 22px;
+  background: transparent !important;
+  color: #000 !important;
+}
+
 .author {
   margin-bottom: 10px;
 }
@@ -321,15 +327,69 @@ button {
   margin-top: 10px;
 }
 
-@media screen and (max-width: 768px) {
+.error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.error-container h1 {
+  color: #888;
+  font-size: 5rem;
+}
+
+.error-container p {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+@media screen and (min-width: 400px) and (max-width: 700px) {
   .main {
     width: 100%;
   }
   .row-flex {
-    flex-direction: column;
     padding: 0 10px;
   }
+}
 
+@media screen and (min-width: 400px) and (max-width: 550px) {
+  .main {
+    width: 100%;
+  }
+  .row-flex {
+    padding: 0 10px;
+  }
+  .row-flex h1 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .row-flex a {
+    font-size: 15px;
+  }
+
+  .row-flex .detail-title {
+    max-width: 90%;
+  }
+
+  .detail-image {
+    width: 100%;
+    height: 200px;
+  }
+
+  .post-cnt {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media screen and (min-width: 0px) and (max-width: 400px) {
+  .main {
+    width: 100%;
+  }
+  .row-flex {
+    padding: 0 10px;
+  }
   .row-flex h1 {
     font-size: 18px;
     margin-bottom: 10px;

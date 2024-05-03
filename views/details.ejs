@@ -2,11 +2,19 @@
 
 <div class="row-flex">
   <h1 class="detail-title"><%= post.title %></h1>
-  <a class="back-btn" href="/">Back to Home</a>
+  <a class="back-btn with-icon" href="/"
+    ><i class="fa-solid fa-arrow-left"></i
+  ></a>
 </div>
 <div class="author">
-  <p>Posted by: <span> <%= post.userId.username %> </span></p>
-  <p>Posted on: <span> <%= post.createdAt %> </span></p>
+  <p>
+    <i class="fa-regular fa-user"></i>
+    <span> <%= post.userId.username %> </span>
+  </p>
+  <p>
+    <i class="fa-regular fa-calendar-days"></i>
+    <span> <%= date %> </span>
+  </p>
 </div>
 <% if(post.image_url) { %>
 <img class="detail-image" src="<%= post.image_url %>" alt="<%= post.title %>" />

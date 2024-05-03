@@ -2,8 +2,14 @@ const Post = require("../models/post");
 
 const { validationResult } = require("express-validator");
 
+const TimeAgo = require("javascript-time-ago");
+const en = require("javascript-time-ago/locale/en");
+TimeAgo.addDefaultLocale(en);
+const timeAgo = new TimeAgo("en-US");
+console.log(TimeAgo);
+
 //? Rendering Home Page
-exports.renderHomePage = (req, res) => {
+exports.renderHomePage = (req, res, next) => {
   Post.find()
     .populate("userId", "username email")
     .sort({ createdAt: -1 })
@@ -14,7 +20,11 @@ exports.renderHomePage = (req, res) => {
         isLogin: req.session.isLogin ? true : false,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error(" Something went wrong. Please try again. ");
+      return next(error);
+    });
 };
 
 //? Rendering Create Post Page
@@ -28,7 +38,7 @@ exports.renderCreatePage = (req, res) => {
 };
 
 //? Handle Create Post
-exports.createPost = (req, res) => {
+exports.createPost = (req, res, next) => {
   const { title, description, photo } = req.body;
 
   const errors = validationResult(req);
@@ -44,33 +54,49 @@ exports.createPost = (req, res) => {
     .then((_) => {
       res.redirect("/");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error(" Post could not be created. try again. ");
+      return next(error);
+    });
 };
 
 //? Handle Post Details
-exports.getPostDetails = (req, res) => {
+exports.getPostDetails = (req, res, next) => {
   const postId = req.params.postId;
 
   Post.findById(postId)
     .populate("userId", "username email")
     .then((post) => {
-      res.render("details", { title: post.title, post });
+      res.render("details", {
+        title: post.title,
+        post,
+        date: timeAgo.format(new Date(post.createdAt) - 60 * 1000, "round"),
+      });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Post not found with this id.");
+      return next(error);
+    });
 };
 
 //? Handle Delete Post
-exports.deletePost = (req, res) => {
+exports.deletePost = (req, res, next) => {
   const { postId } = req.params;
   Post.deleteOne({ _id: postId, userId: req.user._id })
     .then((_) => {
       res.redirect("/");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Post could not be deleted.");
+      return next(error);
+    });
 };
 
 //? Render Edit Page
-exports.renderEditPage = (req, res) => {
+exports.renderEditPage = (req, res, next) => {
   const { postId } = req.params;
   Post.findById(postId)
     .then((post) => {
@@ -90,11 +116,15 @@ exports.renderEditPage = (req, res) => {
         errorMsg: null,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Post not found with this id.");
+      return next(error);
+    });
 };
 
 //? Handle Update Post
-exports.updatePost = (req, res) => {
+exports.updatePost = (req, res, next) => {
   const { postId, title, description, photo } = req.body;
 
   const errors = validationResult(req);
@@ -120,8 +150,11 @@ exports.updatePost = (req, res) => {
         res.redirect(`/post/${postId}`);
       });
     })
-
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Post could not be updated.");
+      return next(error);
+    });
 
   // Post.updateOne({ _id: postId }, { title, description, image_url: photo })
   //   .then((result) => {
