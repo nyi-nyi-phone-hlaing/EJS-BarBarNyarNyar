@@ -16,8 +16,8 @@ router.get("/create-post", postController.renderCreatePage);
 router.post(
   "/",
   validatePostTitle("title"),
-  validatePostDescription("description"),
   validatePostPhoto("photo"),
+  validatePostDescription("description"),
   postController.createPost
 );
 

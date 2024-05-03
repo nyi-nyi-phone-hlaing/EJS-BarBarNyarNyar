@@ -9,6 +9,7 @@ const {
   validateRegisterPassword,
   validateLoginEmail,
   validateLoginPassword,
+  validateResetEmail,
   validateResetPassword,
   validateResetConfirmPassword,
 } = require("../utils/validation");
@@ -43,7 +44,11 @@ router.post("/logout", authController.logout);
 router.get("/reset-password", authController.getResetPage);
 
 //? POST -> /reset
-router.post("/reset", authController.resetLinkSend);
+router.post(
+  "/reset",
+  validateResetEmail("email"),
+  authController.resetLinkSend
+);
 
 //? GET -> /feedback
 router.get("/feedback", authController.getFeedbackPage);

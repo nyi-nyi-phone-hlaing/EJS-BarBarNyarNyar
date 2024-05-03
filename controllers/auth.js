@@ -148,19 +148,32 @@ exports.getResetPage = (req, res) => {
   res.render("auth/reset-password", {
     title: "Reset Password",
     errorMsg: message,
+    oldFormData: { email: "" },
   });
 };
 
 exports.resetLinkSend = (req, res) => {
   const email = req.body.email;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).render("auth/reset-password", {
+      title: "Reset Password",
+      errorMsg: errors.array()[0].msg,
+      oldFormData: { email },
+    });
+  }
   crypto.randomBytes(32, (err, buffer) => {
     if (err) return res.redirect("/reset-password");
     const token = buffer.toString("hex");
     User.findOne({ email })
       .then((user) => {
         if (!user) {
-          req.flash("error", "Email does not exist in our record.");
-          return res.redirect("/reset-password");
+          return res.status(422).render("auth/reset-password", {
+            title: "Reset Password",
+            errorMsg: "No account exists with this email",
+            oldFormData: { email },
+          });
         }
         user.resetToken = token;
         user.tokenExp = Date.now() + 180000;
@@ -202,7 +215,6 @@ exports.changeNewPassword = (req, res) => {
   const { password, confirmPassword, token, user_id } = req.body;
 
   const errors = validationResult(req);
-
   if (!errors.isEmpty()) {
     return res.status(422).render("auth/reset-form", {
       title: "Reset Password",

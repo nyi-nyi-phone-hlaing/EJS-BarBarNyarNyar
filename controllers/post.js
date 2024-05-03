@@ -50,9 +50,12 @@ exports.createPost = (req, res) => {
 //? Handle Post Details
 exports.getPostDetails = (req, res) => {
   const postId = req.params.postId;
+
   Post.findById(postId)
     .populate("userId", "username email")
-    .then((post) => res.render("details", { title: post.title, post }))
+    .then((post) => {
+      res.render("details", { title: post.title, post });
+    })
     .catch((err) => console.log(err));
 };
 

@@ -1,10 +1,8 @@
-const { body } = require("express-validator");
+const { body, check } = require("express-validator");
 const User = require("../models/user");
 
 exports.validateRegisterUsername = (username) => {
   return body(username)
-    .exists()
-    .withMessage("Username is required")
     .isLength({ min: 4, max: 20 })
     .withMessage("Username must be between 4 and 20 characters")
     .isAlphanumeric()
@@ -13,14 +11,12 @@ exports.validateRegisterUsername = (username) => {
 
 exports.validateRegisterEmail = (email) => {
   return body(email)
-    .exists()
-    .withMessage("Email is required")
     .isEmail()
     .withMessage("Invalid email format")
     .custom((value, { req }) => {
       return User.findOne({ email: value }).then((user) => {
         if (user) {
-          return Promise.reject("Email already exists");
+          return Promise.reject("Email is already exists");
         }
       });
     });
@@ -28,8 +24,6 @@ exports.validateRegisterEmail = (email) => {
 
 exports.validateRegisterPassword = (password) => {
   return body(password)
-    .exists()
-    .withMessage("Password is required")
     .not()
     .matches(/ /)
     .withMessage("Password cannot contain spaces")
@@ -39,17 +33,11 @@ exports.validateRegisterPassword = (password) => {
 };
 
 exports.validateLoginEmail = (email) => {
-  return body(email)
-    .exists()
-    .withMessage("Email is required")
-    .isEmail()
-    .withMessage("Please enter a valid email");
+  return body(email).isEmail().withMessage("Please enter a valid email");
 };
 
 exports.validateLoginPassword = (password) => {
   return body(password)
-    .exists()
-    .withMessage("Password is required")
     .not()
     .matches(/ /)
     .withMessage("Password cannot contain spaces")
@@ -59,27 +47,33 @@ exports.validateLoginPassword = (password) => {
 };
 
 exports.validatePostTitle = (title) => {
-  return body(title).exists().withMessage("Title is required");
+  return check(title, "Title is required")
+    .trim()
+    .notEmpty()
+    .withMessage("Title cannot be empty");
 };
 
 exports.validatePostDescription = (description) => {
-  return body(description).exists().withMessage("Description is required");
+  return body(description)
+    .trim()
+    .notEmpty()
+    .withMessage("Description cannot be empty");
 };
 
 exports.validatePostPhoto = (photo) => {
-  return body(photo)
-    .exists()
-    .withMessage("Photo is required")
+  return check(photo, "Photo is required")
+    .notEmpty()
+    .withMessage("Photo URL cannot be empty")
     .isURL()
-    .withMessage("Photo must be a valid URL")
-    .isMimeType("image/jpeg", "image/png", "image/jpg")
-    .withMessage("Photo must be a JPEG, PNG or JPG");
+    .withMessage("Photo must be a valid URL");
+};
+
+exports.validateResetEmail = (email) => {
+  return body(email).isEmail().withMessage("Invalid email format");
 };
 
 exports.validateResetPassword = (password) => {
   return body(password)
-    .exists()
-    .withMessage("Password is required")
     .not()
     .matches(/ /)
     .withMessage("Password cannot contain spaces")
