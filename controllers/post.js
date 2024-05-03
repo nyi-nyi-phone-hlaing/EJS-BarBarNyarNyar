@@ -77,7 +77,18 @@ exports.renderEditPage = (req, res) => {
       if (post.userId.toString() !== req.user._id.toString()) {
         return res.redirect("/");
       }
-      res.render("edit-post", { title: "Edit Post", post });
+      res.render("edit-post", {
+        title: "Edit Post",
+        post,
+        oldFormData: {
+          title: post.title,
+          description: post.description,
+          photo: post.image_url,
+          postId: post._id,
+        },
+        isValidationFailed: false,
+        errorMsg: null,
+      });
     })
     .catch((err) => console.log(err));
 };
@@ -85,6 +96,17 @@ exports.renderEditPage = (req, res) => {
 //? Handle Update Post
 exports.updatePost = (req, res) => {
   const { postId, title, description, photo } = req.body;
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).render("edit-post", {
+      title: "Edit Post",
+      errorMsg: errors.array()[0].msg,
+      oldFormData: { title, description, photo, postId },
+      isValidationFailed: true,
+    });
+  }
 
   Post.findById(postId)
     .then((post) => {

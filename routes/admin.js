@@ -28,6 +28,12 @@ router.post("/post/delete/:postId", postController.deletePost);
 router.get("/post/edit/:postId", postController.renderEditPage);
 
 //? POST -> /admin/post/edit
-router.post("/post/edit", postController.updatePost);
+router.post(
+  "/post/edit",
+  validatePostTitle("title"),
+  validatePostPhoto("photo"),
+  validatePostDescription("description"),
+  postController.updatePost
+);
 
 module.exports = router;

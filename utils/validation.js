@@ -50,14 +50,18 @@ exports.validatePostTitle = (title) => {
   return check(title, "Title is required")
     .trim()
     .notEmpty()
-    .withMessage("Title cannot be empty");
+    .withMessage("Title cannot be empty")
+    .isLength({ min: 10, max: 200 })
+    .withMessage("Title must be between 10 and 200 characters");
 };
 
 exports.validatePostDescription = (description) => {
   return body(description)
     .trim()
     .notEmpty()
-    .withMessage("Description cannot be empty");
+    .withMessage("Description cannot be empty")
+    .isLength({ min: 50 })
+    .withMessage("Description must be at least 50 characters long");
 };
 
 exports.validatePostPhoto = (photo) => {

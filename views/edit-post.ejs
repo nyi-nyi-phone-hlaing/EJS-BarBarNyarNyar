@@ -2,18 +2,29 @@
 
 <div class="row-flex">
   <h1 class="detail-title">Edit your post here.</h1>
-  <a class="back-btn" href="/post/<%= post._id %>">Back to Post</a>
+  <a
+    class="back-btn"
+    href="/post/<%= isValidationFailed ? oldFormData.postId : post._id %>"
+    >Back to Post</a
+  >
 </div>
+<% if(errorMsg) { %>
+<p class="err-msg"><%= errorMsg %></p>
+<% } %>
 <form class="post-form" action="/admin/post/edit" method="post">
   <input hidden value="<%= csrfToken %>" name="_csrf" />
-  <input type="text" name="postId" value="<%= post._id %>" hidden />
+  <input
+    type="text"
+    name="postId"
+    value="<%= isValidationFailed ? oldFormData.postId : post._id %>"
+    hidden />
   <div class="field">
     <label for="title">Title</label>
     <input
       type="text"
       name="title"
       id="title"
-      value="<%= post.title %>"
+      value="<%= isValidationFailed ? oldFormData.title : post.title %>"
       required />
   </div>
   <div class="field">
@@ -22,13 +33,13 @@
       type="url"
       name="photo"
       id="photo"
-      value="<%= post.image_url %>"
+      value="<%= isValidationFailed ? oldFormData.photo : post.image_url %>"
       required />
   </div>
   <div class="field">
     <label for="description">Description</label>
     <textarea rows="5" name="description" id="description" required>
- <%= post.description %> </textarea
+ <%= isValidationFailed ? oldFormData.description : post.description %> </textarea
     >
   </div>
   <button type="submit">Save Change</button>

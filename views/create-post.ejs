@@ -7,7 +7,7 @@
 <% if(errorMsg) { %>
 <p class="err-msg"><%= errorMsg %></p>
 <% } %>
-<form class="post-form" action="/admin" method="post" novalidate>
+<form class="post-form" action="/admin" method="post">
   <input hidden value="<%= csrfToken %>" name="_csrf" />
   <div class="field">
     <label for="title">Title</label>
